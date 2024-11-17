@@ -75,7 +75,7 @@
 - `scipy`: For signal processing (e.g., filtering, peak detection).
 
 ### Arduino Libraries
-- Standard C++ libraries for serial communication.
+- Standard C libraries for serial communication.
 
 ---
 
