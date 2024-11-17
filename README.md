@@ -1,85 +1,66 @@
 # PlayMG
 
 ## Overview
-**PlayMG** is an Electromyography (EMG)-based project that uses the Bioamp EXG Pill to map forearm muscle gestures to computer keyboard inputs. By detecting muscle contractions through EMG signals, gestures can trigger actions, such as pressing specific keys on a computer.
+
+PlayMG is an Electromyography (EMG)-based project leveraging the Bioamp EXG Pill to map forearm muscle activity to computer keyboard inputs. By detecting muscle contractions and finger movements through EMG signals, specific gestures can trigger keyboard actions, such as pressing the Spacebar.
 
 ## Features
-- Processes EMG signals from forearm muscle gestures.
-- Maps gestures to keyboard inputs (e.g., clenching a fist to press Spacebar).
-- Real-time signal processing using band-pass filtering, envelope detection, and peak analysis.
-- Customizable gesture-to-key mapping.
 
----
-
-## Setup
-
-### Hardware Requirements
-- **Bioamp EXG Pill** (or compatible EMG sensor).
-- **Arduino board** (e.g., Uno, Mega).
-- Wires and a breadboard for connections.
-- Computer with USB connectivity.
-
-### Software Requirements
-- **Python** (version 3.6 or later).
-- **Arduino IDE** for uploading the script to the Arduino.
-- Python libraries: `serial`, `time`, `matplotlib`, `numpy`, `asyncio`, `scipy`.
-
----
+- Real-time processing of EMG signals to detect forearm muscle activity and finger movements.
+- Gesture-to-key mapping for seamless interaction (e.g., clenching a fist to press Spacebar).
+- Advanced signal processing techniques, including band-pass filtering, envelope detection, and peak analysis.
+- Easily customizable gesture-to-key mappings.
 
 ## Procedure
 
-### 1. Data Collection
-1. Connect the Bioamp EXG Pill to the Arduino to capture analog signals for muscle gestures.
-2. Upload the provided Arduino sketch to the Arduino board to transmit EMG data to the computer.
+### Data Collection
+- Connect the Bioamp EXG Pill to the Arduino to capture analog signals corresponding to different muscle movements and finger gestures.
+- Upload the provided Arduino sketch to enable communication between the Arduino and the computer.
 
-### 2. Signal Processing
-1. EMG signals are filtered using a band-pass filter to remove noise.
-2. The filtered signal is rectified and smoothed to detect muscle contractions.
+### Signal Processing
+- EMG signals are filtered using a band-pass filter to remove noise.
+- Filtered signals are then enveloped to further reduce noise.
+- Envelopes are parameterized and muscle contractions are detected with high certainty.
 
-### 3. Key Mapping
-1. Processed signals are analyzed for distinct patterns (e.g., envelope peaks).
-2. Map these patterns to keyboard inputs for real-time actions.
+### Gesture Mapping
+- Processed EMG signals are analyzed to recognize specific gestures, which are then mapped to keyboard inputs.
 
----
+## Gesture Keybinds
 
-## Gesture Mapping
+| **Gesture**           | **Keyboard Key**   |
+|-----------------------|--------------------|
+| Left Fist Clenching   | Left Input         |
+| Right Fist Clenching  | Right Input        |
 
-| **Gesture**           | **Keyboard Key** |
-|------------------------|------------------|
-| Fist Clenching        | Spacebar         |
-| Wrist Flexion         | Enter            |
-| [Insert Gesture Here] | [Insert Key Here]|
-| [Insert Gesture Here] | [Insert Key Here]|
+## Challenges Faced and Solutions
 
-*Edit this table to customize gestures and their mapped keys.*
+1. **Detecting Highs and Lows in Envelope Peaks**
+   - Fine-tuned filter parameters and adjusted peak detection thresholds.
 
----
+2. **Hardware Misconfigurations**
+   - Corrected Arduino pin connections and verified channel assignments (e.g., wrong channel initially used).
 
-## Challenges Faced
-- Detecting peaks accurately in noisy EMG data.
-- Reducing processing delays for real-time interaction.
-- Initial signal spikes causing false positives.
-- Synchronizing multiple channels effectively.
-- Debugging hardware misconfigurations (e.g., wrong Arduino pin connections).
+3. **Asynchronous Channel Processing**
+   - Optimized the script to handle all five EMG channels efficiently.
 
----
+4. **Processing Delays**
+   - Reduced signal processing runtime for near-instantaneous feedback.
+
+5. **Initial Signal Spikes**
+   - Ignored early noise to avoid false positives during system initialization.
+
+6. **Muscle Contraction Detection**
+   - Achieved real-time responsiveness by improving the detection algorithm.
 
 ## Libraries Used
 
 ### Python Libraries
-- `serial`: For reading data from the Arduino.
-- `time`: For timing and sampling.
-- `matplotlib`: For data visualization and plotting.
-- `numpy`: For numerical computations and array handling.
-- `asyncio`: For handling asynchronous tasks.
-- `scipy`: For signal processing (e.g., filtering, peak detection).
+- `serial`: Communicates with the Arduino for real-time data acquisition.
+- `time`: Handles time-based sampling and delays.
+- `matplotlib`: Visualizes raw, filtered, and processed EMG data.
+- `numpy`: Performs numerical computations and array manipulations.
+- `asyncio`: Supports asynchronous signal processing tasks.
+- `scipy`: Provides filtering and peak detection tools.
 
 ### Arduino Libraries
 - Standard C libraries for serial communication.
-
----
-
-## License
-This project is open-source and available for customization. Feel free to modify it for your use case.
-
----
