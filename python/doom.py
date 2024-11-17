@@ -16,11 +16,11 @@ LOW_CUTOFF = 74.5     # Low cutoff frequency in Hz
 HIGH_CUTOFF = 149.5   # High cutoff frequency in Hz
 SAMPLING_RATE = 500   # Sampling rate in Hz
 ENVELOPE_CUTOFF = 7   # Low-pass filter cutoff for envelope extraction (in Hz)
-ENVELOPE_PROMINENCE = 0.005  # Prominence for peak detection
-ENVELOPE_HEIGHT = 1.25       # Minimum height for peak detection
+ENVELOPE_PROMINENCE = 0.01  # Prominence for peak detection
+ENVELOPE_HEIGHT = 1      # Minimum height for peak detection
 ENVELOPE_WIDTH = 0.0025      # Minimum width for peak detection
 
-FLEX_THRESHOLD = 0.1
+FLEX_THRESHOLD = 0.005
 
 PORT_TOTAL = 8
 
@@ -63,7 +63,7 @@ def process_emg_data(port, board, start_time):
         analog_flex1 = board.analog[3].read() # Middle Finger Right Hand
         analog_flex2 = board.analog[4].read() # Pointer Finger Right hand
         analog_flex3 = board.analog[5].read() # Left Hand
-        if value is not None:
+        if value and analog_flex1 and analog_flex2 and analog_flex3 is not None:
             new_value = int(value * 1000)
             buffer.append(new_value)
 
@@ -84,6 +84,9 @@ def process_emg_data(port, board, start_time):
                 flex2_mean = np.mean(buffer_array_flex2)
                 flex3_mean = np.mean(buffer_array_flex3)
 
+                print(f"Flex 1 Mean: {flex1_mean}")
+                print(f"Flex 2 Mean: {flex2_mean}")
+                print(f"Flex 3 Mean: {flex3_mean}")
 
                 # Apply filters and detect peaks
                 filtered = apply_bandpass_filter(buffer_array, LOW_CUTOFF, HIGH_CUTOFF, SAMPLING_RATE)
@@ -96,9 +99,9 @@ def process_emg_data(port, board, start_time):
                 )
 
                 if envelope_peaks.size > 0 and port == 0 and flex1_mean < FLEX_THRESHOLD:
-                    keyboard.PressA()
+                    keyboard.PressW()
                 elif envelope_peaks.size > 0 and port == 15 and flex1_mean < FLEX_THRESHOLD:
-                    keyboard.PressD()
+                    keyboard.HawkTuah()
                 elif flex1_mean > FLEX_THRESHOLD:
                     keyboard.PressSpace()
                 elif flex2_mean > FLEX_THRESHOLD:
@@ -107,21 +110,13 @@ def process_emg_data(port, board, start_time):
                     keyboard.PressS()
 
                 
-                    
-
                 # Send filtered data to the queue
                 data_queue.put((time_points[-len(buffer):], filtered, envelope, envelope_peaks))
                 
                 buffer = []  # Clear buffer after processing
         time.sleep(0.001)
 
-def process_digital_data(port, board):
-    while True:
-        value = board.digital[port]
-        if value == 1:
-            match port:
-                case 0:
-                    keyboard.PressSpace()
+
 
 
 # Main function
@@ -133,7 +128,7 @@ def main():
         it.start()
         for i in range(PORT_TOTAL + 1):
             board.get_pin(f'a:{i}:i')
-            board.get_pin(f"d:{i}:i")
+            #board.get_pin(f"d:{i}:i")
     except Exception as e:
         print(f"Error: {e}")
         exit()
@@ -144,13 +139,13 @@ def main():
     threads = []
     for port in range(PORT_TOTAL + 1):  # Ports A0 to A4
         analog_thread_emg = threading.Thread(target=process_emg_data, args=(port, board, start_time))
-        digital_thread = threading.Thread(target=process_emg_data, args=(port, board))
-        digital_thread.daemon = True
+        #digital_thread = threading.Thread(target=process_emg_data, args=(port, board))
+        #digital_thread.daemon = True
         analog_thread_emg.daemon = True
         threads.append(analog_thread_emg)
-        threads.append(digital_thread)
+        #threads.append(digital_thread)
         analog_thread_emg.start()
-        digital_thread.start()
+        #digital_thread.start()
 
     # Collect data and plot after threads finish
     try:
