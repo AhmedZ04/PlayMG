@@ -7,6 +7,23 @@ import pyfirmata
 
 import keyboard
 
+'''
+HOW TO RUN THIS FILE:
+
+1. Install the requirements (I didnt make a requirements.txt my bad)
+2. Connect Arduino as shown in the EXG Pill docs
+3. Connect to Analog input terminal A0
+4. Verify and Run StandardFirmata.ino (found in the ardu folder in this repository)
+5. Change SERIAL_PORT to whatever is shown in Aruino IDE (For Arduino Uno it is COM3 and for Mega it is COM4)
+6. Open the terminal and find the folder
+7. run Python DirectGraphTest.py
+8. Wait for init period and conduct testing
+9. When done testing press ctrl-c in the terminal to see the graphs
+10. Close the Matplotlib Chart when you're finished
+'''
+
+
+
 # Configure serial port
 SERIAL_PORT = 'COM4'  # Replace with your Arduino's port
 BAUD_RATE = 9600      # Match the Arduino's serial rate
