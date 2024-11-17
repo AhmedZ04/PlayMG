@@ -26,21 +26,21 @@ void loop() {
   //Serial.println(sensorValue0 + com + sensorValue1 + com + sensorValue2 + com + sensorValue3 + com + sensorValue4);
   //Serial.println(sensorValue0);
   
-  Serial.print(sensorValue0);
+  //Serial.print(sensorValue0);
 
-  Serial.print(sensorValue1);
+  //Serial.print(sensorValue1);
 
-  Serial.print(sensorValue2);
+  //Serial.print(sensorValue2);
   
-  Serial.print(sensorValue3);
+  //Serial.print(sensorValue3);
   
-  Serial.println(sensorValue4);
+  //Serial.println(sensorValue4);
 
-
-  
 
   
-  //Serial.println(sensorValue0);
+
+  
+  Serial.println(sensorValue0);
   //Serial.println(sensorValue1);
   //Serial.println(sensorValue2);
   //Serial.println(sensorValue3);

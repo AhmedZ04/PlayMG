@@ -29,6 +29,10 @@ VK_SPACE = 0x20
 VK_T = 0x54
 VK_U = 0x55
 VK_ENTER = 0x0D
+VK_S = 0x53
+VK_D = 0x44
+VK_LEFT = 0x25
+VK_RIGHT = 0x27
 
 class MOUSEINPUT(ctypes.Structure):
     _fields_ = (("dx",          wintypes.LONG),
@@ -112,6 +116,41 @@ def PressW():
     PressKey(VK_W)
     time.sleep(0.3)
     ReleaseKey(VK_W)
+
+def PressA():
+    PressKey(VK_A)
+    time.sleep(0.3)
+    ReleaseKey(VK_A)
+
+def PressS():
+    PressKey(VK_S)
+    time.sleep(0.3)
+    ReleaseKey(VK_S)
+
+def PressD():
+    PressKey(VK_D)
+    time.sleep(0.3)
+    ReleaseKey(VK_D)
+
+def PressSpace():
+    PressKey(VK_SPACE)
+    time.sleep(0.3)
+    ReleaseKey(VK_SPACE)
+
+
+def PressRightArrow():
+    PressKey(VK_RIGHT)
+    time.sleep(0.3)
+    ReleaseKey(VK_RIGHT)
+
+
+def PressLeftArrow():
+    PressKey(VK_LEFT)
+    time.sleep(0.3)
+    ReleaseKey(VK_LEFT)
+
+
+
 
 if __name__ == '__main__':
     time.sleep(3)

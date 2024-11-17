@@ -8,6 +8,12 @@ it.start()
 
 board.get_pin('a:0:i')
 board.get_pin('a:1:i')
+board.get_pin('a:2:i')
+board.get_pin('a:3:i')
+board.get_pin('a:4:i')
+board.get_pin('a:5:i')
+
+
 
 while True:
     start = time.time()

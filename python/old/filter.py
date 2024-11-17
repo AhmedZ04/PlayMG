@@ -18,7 +18,7 @@ class Filter:
         # Envelope filter parameters
         self.ENVELOPE_CUTOFF = 7  # Low-pass filter cutoff for envelope extraction (in Hz)
         self.ENVELOPE_PROMINENCE = 0.005 # Promonience for the envelope peak detection
-        self.ENVELOPE_HEIGHT = 2.5 # Height is the thing to adjust in order to get the right peaks Misbah 0.5
+        self.ENVELOPE_HEIGHT = 1.25 # Height is the thing to adjust in order to get the right peaks Misbah 0.5
         self.ENVELOPE_WIDTH = 0.0025 # Misbah: 1
 
         self.time_points = []
@@ -91,30 +91,32 @@ class Filter:
         
         buffer = []
         buffer_size = int(self.SAMPLING_RATE * self.BUFFER_TIME)  # 0.2 seconds buffer
+        i = 0
+        j = 0
         if value is not None:
             value = int(value)
             self.time_points.append(time.time() - start_time)
             buffer.append(value)
-        if time.time() - start_time >= 12:
+
+        if len(buffer) >= buffer_size:
             
-            if len(buffer) >= buffer_size:
-                buffer_array = np.array(buffer)
+            buffer_array = np.array(buffer)
 
-                # Apply filters and detect peaks
-                filtered = self.apply_bandpass_filter(buffer_array, self.LOW_CUTOFF, self.HIGH_CUTOFF, self.SAMPLING_RATE)
-                envelope = self.calculate_envelope(filtered, self.SAMPLING_RATE, self.ENVELOPE_CUTOFF)
-                envelope_peaks, properties = find_peaks(
-                    envelope, 
-                    prominence=self.ENVELOPE_PROMINENCE,  # Adjust for your signal strength
-                    width=self.ENVELOPE_WIDTH, 
-                    height= self.ENVELOPE_HEIGHT 
-                )
-                
-                # Check and print detected peaks
-                if envelope_peaks.size > 0 and i >= 0:
-                    print(f"Detected peaks at: {np.array(self.time_points)[-len(buffer) + envelope_peaks]}")
-                    #keyboard.HawkTuah()
-                i += 1
+            # Apply filters and detect peaks
+            filtered = self.apply_bandpass_filter(buffer_array, self.LOW_CUTOFF, self.HIGH_CUTOFF, self.SAMPLING_RATE)
+            envelope = self.calculate_envelope(filtered, self.SAMPLING_RATE, self.ENVELOPE_CUTOFF)
+            envelope_peaks, properties = find_peaks(
+                envelope, 
+                prominence=self.ENVELOPE_PROMINENCE,  # Adjust for your signal strength
+                width=self.ENVELOPE_WIDTH, 
+                height= self.ENVELOPE_HEIGHT 
+            )
+            
+            # Check and print detected peaks
+            if envelope_peaks.size > 0 and i >= 0:
+                print(f"Detected peaks at: {np.array(self.time_points)[-len(buffer) + envelope_peaks]}")
+                #keyboard.HawkTuah()
+            i += 1
 
-                # Clear the buffer
-                buffer = []
+            # Clear the buffer
+            buffer = []

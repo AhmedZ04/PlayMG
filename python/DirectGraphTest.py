@@ -7,6 +7,23 @@ import pyfirmata
 
 import keyboard
 
+'''
+HOW TO RUN THIS FILE:
+
+1. Install the requirements (I didnt make a requirements.txt my bad)
+2. Connect Arduino as shown in the EXG Pill docs
+3. Connect to Analog input terminal A0
+4. Verify and Run StandardFirmata.ino (found in the ardu folder in this repository)
+5. Change SERIAL_PORT to whatever is shown in Aruino IDE (For Arduino Uno it is COM3 and for Mega it is COM4)
+6. Open the terminal and find the folder
+7. run Python DirectGraphTest.py
+8. Wait for init period and conduct testing
+9. When done testing press ctrl-c in the terminal to see the graphs
+10. Close the Matplotlib Chart when you're finished
+'''
+
+
+
 # Configure serial port
 SERIAL_PORT = 'COM4'  # Replace with your Arduino's port
 BAUD_RATE = 9600      # Match the Arduino's serial rate
@@ -18,8 +35,8 @@ SAMPLING_RATE = 500   # Sampling rate in Hz (update to your actual rate)
 
 # Envelope filter parameters
 ENVELOPE_CUTOFF = 7  # Low-pass filter cutoff for envelope extraction (in Hz)
-ENVELOPE_PROMINENCE = 0.005 # Promonience for the envelope peak detection
-ENVELOPE_HEIGHT = 1.25 # Height is the thing to adjust in order to get the right peaks Misbah = 2.2. Fawwaz = 5
+ENVELOPE_PROMINENCE = 0.01 # Promonience for the envelope peak detection
+ENVELOPE_HEIGHT = 1 # Height is the thing to adjust in order to get the right peaks Misbah = 2.2. Fawwaz = 5
 ENVELOPE_WIDTH = 0.0025 # Misbah: 1
 
 # Initialize serial connection
@@ -96,17 +113,18 @@ try:
     board.get_pin('a:2:i')
     board.get_pin('a:3:i')
     board.get_pin('a:4:i')
+    board.get_pin('a:15:i')
     while True:
         
         #beg = time.time()'''
         beg = time.time()
 
         analog_input0 = board.analog[0].read()
-        analog_input1 = board.analog[1]
+        analog_input1 = board.analog[1].read()
         analog_input2 = board.analog[2]
         analog_input3 = board.analog[3]
         analog_input4 = board.analog[4]
-
+        analog_input15 = board.analog[15].read()
 
         value = analog_input0
         time.sleep(0.001)  
@@ -126,7 +144,7 @@ try:
     
         if time.time() - start_time >= 12:
             if j == 0:
-                print("Initialization Finishedw")
+                print("Initialization Finished")
                 j += 1
             if len(buffer) >= buffer_size:
                 buffer_array = np.array(buffer)
@@ -141,6 +159,8 @@ try:
                     height= ENVELOPE_HEIGHT 
                 )
                 
+            
+
                 # Check and print detected peaks
                 if envelope_peaks.size > 0 and i >= 0:
                     #keyboard.PressW()
