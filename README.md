@@ -1,7 +1,7 @@
-# HawkDuah
+# PlayMG
 
 ## Overview
-**HawkDuam** is an Electromyography (EMG)-based project that uses the Bioamp EXG Pill to map forearm muscle gestures to computer keyboard inputs. By detecting muscle contractions through EMG signals, gestures can trigger actions, such as pressing specific keys on a computer.
+**PlayMG** is an Electromyography (EMG)-based project that uses the Bioamp EXG Pill to map forearm muscle gestures to computer keyboard inputs. By detecting muscle contractions through EMG signals, gestures can trigger actions, such as pressing specific keys on a computer.
 
 ## Features
 - Processes EMG signals from forearm muscle gestures.
